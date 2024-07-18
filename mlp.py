@@ -47,39 +47,43 @@ class MLP:
         return [p for layer in self.layers for p in layer.parameters()]
     
 
-x = [2.0, 3.0]
-model = MLP(3, [3,4,4,1])
 
-x_train = [
-    [2.0, 3.0, -1.0],
-    [3.0, -1.0, 0.5],
-    [0.5, 1.0, 1.0],
-    [1.0, 1.0, -1.0]
-]
-
-y_train = [1.0, -1.0, -1.0, 1.0]
-
-# ypred = [model(x) for x in x_train]
-# ypred
 
 def mse_loss(ypred, y_train):
     return (ypred - y_train)**2
 
-for k in range(200):
 
-    #forward
-    ypreds = [model(x) for x in x_train]
-    loss = sum(mse_loss(y_hat, y_actual) for y_hat, y_actual in zip(ypreds, y_train))
+if __name__ == "__main__":
+    x = [2.0, 3.0]
+    model = MLP(3, [3,4,4,1])
 
-    # zero_grad
-    for p in model.parameters():
-        p.grad = 0.0
+    x_train = [
+        [2.0, 3.0, -1.0],
+        [3.0, -1.0, 0.5],
+        [0.5, 1.0, 1.0],
+        [1.0, 1.0, -1.0]
+    ]
 
-    loss.backward()
+    y_train = [1.0, -1.0, -1.0, 1.0]
 
-    # update
-    for p in model.parameters():
-        p.data += -0.01 * p.grad
+    # ypred = [model(x) for x in x_train]
+    # ypred
 
-    if k%20 == 0: 
-        print(f"Epoch {k}, Loss: {loss.data}")
+    for k in range(200):
+
+        #forward
+        ypreds = [model(x) for x in x_train]
+        loss = sum(mse_loss(y_hat, y_actual) for y_hat, y_actual in zip(ypreds, y_train))
+
+        # zero_grad
+        for p in model.parameters():
+            p.grad = 0.0
+
+        loss.backward()
+
+        # update
+        for p in model.parameters():
+            p.data += -0.01 * p.grad
+
+        if k%20 == 0: 
+            print(f"Epoch {k}, Loss: {loss.data}")
