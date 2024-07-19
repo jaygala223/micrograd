@@ -67,6 +67,10 @@ class Value:
 
     def __sub__(self, other): # self - other
         return self + (-other)
+    
+    def __lt__(self, other): # less than
+        other = other if isinstance(other, Value) else Value(other)
+        return self.data < other.data
 
     def tanh(self):
         x = self.data
